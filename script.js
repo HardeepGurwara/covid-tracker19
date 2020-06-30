@@ -13,6 +13,7 @@ function initMap() {
 window.onload = () => {
   getCountryData();
   getHistoricalData();
+  getWorldCoronaData();
 };
 
 const getCountryData = () => {
@@ -23,6 +24,16 @@ const getCountryData = () => {
     .then((data) => {
       showDataOnMap(data);
       showDataInTable(data);
+    });
+};
+
+const getWorldCoronaData = () => {
+  fetch("https://disease.sh/v2/all")
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      buildPieChart(data);
     });
 };
 
@@ -70,6 +81,28 @@ const buildChartData = (data) => {
     recovered: chartDataRecovered,
     deaths: chartDataDeaths,
   };
+};
+
+const buildPieChart = (data) => {
+  var ctx = document.getElementById("myPieChart").getContext("2d");
+  var myPieChart = new Chart(ctx, {
+    type: "pie",
+    data: {
+      datasets: [
+        {
+          data: [data.active, data.recovered, data.deaths],
+          backgroundColor: ["#9d80fe", "#7dd71d", "#fb4443"],
+        },
+      ],
+
+      // These labels appear in the legend and in the tooltips when hovering different arcs
+      labels: ["Active", "Recovered", "Deaths"],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+    },
+  });
 };
 
 const buildChart = (chartData) => {
@@ -195,5 +228,5 @@ const showDataInTable = (data) => {
         </tr>
 `;
   });
-  document.getElementById("table-data").innerHTML = html;
+  //   document.getElementById("table-data").innerHTML = html;
 };
