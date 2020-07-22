@@ -18,6 +18,7 @@
     <script src="https://kit.fontawesome.com/c939d0e917.js"></script>
     <script src="map-style.js"></script>
     <script src="script.js"></script>
+    <script src="chart.js"></script>
   </head>
 
   <body>
@@ -26,8 +27,7 @@
         <div class="col-8">
           <div class="row header-container">
             <div class="col title-container">
-              <h1>Covid-19</h1>
-              <h4>Coronavirus</h4>
+              <h2>Covid-19 Tracker</h2>
             </div>
             <div class="col search-container">
               <div class="input-group">
@@ -48,34 +48,29 @@
           </div>
           <div class="row stats-container">
             <div class="col">
-              <div class="card" ">
+              <div class="card">
                 <div class="card-body">
-                  <h5 class="card-title">Total cases</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">1,436,886</h6>
+                  <h5 class="card-title"  onclick="changeDataSelections('cases')">Coronavirus cases</h5>
+                  <H3 class="card-subtitle mb-2 total-number">1,436,886</H3>
+                  <div class="text-muted font-weight-bold total cases-total "> 1.69M Total</div>
                 </div>
               </div>
-            </div>
-            <div class="col">
-                <div class="card" ">
-                    <div class="card-body">
-                      <h5 class="card-title">Active cases</h5>
-                      <h6 class="card-subtitle mb-2 text-muted">1,049,886</h6>
-                    </div>
-                  </div>
             </div>
             <div class="col">
             <div class="card" ">
-                <div class="card-body">
+                <div class="card-body"  onclick="changeDataSelections('recovered')">
                   <h5 class="card-title">Recovered</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">302,964</h6>
+                  <H3 class="card-subtitle mb-2 recovered-number">302,964</H3>
+                  <div class="text-muted font-weight-bold total recovered-total "> 1.69M Total</div>
                 </div>
               </div>
             </div>
             <div class="col">
-                <div class="card" ">
+                <div class="card"  onclick="changeDataSelections('deaths')">
                     <div class="card-body">
                       <h5 class="card-title">Deaths</h5>
-                      <h6 class="card-subtitle mb-2 text-muted">82,191</h6>
+                      <H3 class="card-subtitle mb-2 deaths-number">82,191</H3>
+                      <div class="text-muted font-weight-bold total deaths-total "> 1.69M Total</div>
                     </div>
                 </div>
             </div>
@@ -85,16 +80,31 @@
                 <div id="map"></div>
               </div>
           </div> 
-          <div class="row chart-container mt-3">
+          <!-- <div class="row chart-container mt-3">
               <div class="col linear-chart p-3 mr-3">
                 <canvas id="myChart"></canvas>
               </div>
               <div class="col p-3">
                 <canvas id="myPieChart"></canvas>
               </div>
+          </div> -->
+        </div>
+        <div class="col-4 side-panel-container my-3">
+          <div class="cases-table-container">
+              <h4>Live cases by country</h4>
+              <div class="country-data">
+                <table class="table ">
+                  <tbody id="table-data"></tbody>
+                  </table>
+              </div>
+          </div>
+          <div class="chart-container mt-3">
+            <div class="linear-chart p-3 mr-3">
+              <h4>Total Cases Globally</h4>
+              <canvas id="myChart"></canvas>
+            </div>
           </div>
         </div>
-        <div class="col-4"></div>
       </div>
     </div>
     <!-- Navigatition bar -->

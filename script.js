@@ -1,5 +1,13 @@
 var infoWindow;
 var map;
+let coronaGlobalData;
+let mapCircles = [];
+let casesTypeColors = {
+  cases: "#1d2c4d",
+  active: "#9d80fe",
+  recovered: "#7dd71d",
+  deaths: "#fb4443",
+};
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 42.47278, lng: -122.80167 },
@@ -16,12 +24,24 @@ window.onload = () => {
   getWorldCoronaData();
 };
 
+const changeDataSelections = (casesTypes) => {
+  clearTheMap();
+  showDataOnMap(coronaGlobalData, casesTypes);
+};
+
+const clearTheMap = () => {
+  for (let circle of mapCircles) {
+    circle.setMap(null);
+  }
+};
+
 const getCountryData = () => {
   fetch("http://localhost:3000/countries")
     .then((response) => {
       return response.json();
     })
     .then((data) => {
+      coronaGlobalData = data;
       showDataOnMap(data);
       showDataInTable(data);
     });
@@ -33,8 +53,26 @@ const getWorldCoronaData = () => {
       return response.json();
     })
     .then((data) => {
-      buildPieChart(data);
+      // buildPieChart(data);
+      setStatsData(data);
     });
+};
+
+const setStatsData = (data) => {
+  let addedCases = numeral(data.todayCases).format("+0,0");
+  let addedRecovered = numeral(data.todayRecovered).format("+0,0");
+  let addedDeaths = numeral(data.todayDeaths).format("+0,0");
+  let totalCases = numeral(data.cases).format("0.0a");
+  let totalRecovered = numeral(data.recovered).format("0.0a");
+  let totalDeaths = numeral(data.deaths).format("0.0a");
+  document.querySelector(".total-number").innerHTML = addedCases;
+  document.querySelector(".recovered-number").innerHTML = addedRecovered;
+  document.querySelector(".deaths-number").innerHTML = addedDeaths;
+  document.querySelector(".cases-total").innerHTML = `${totalCases} Total`;
+  document.querySelector(
+    ".recovered-total"
+  ).innerHTML = `${totalRecovered} Recovered`;
+  document.querySelector("deaths-total").innerHTML = `${totalDeaths} Deaths`;
 };
 
 const getHistoricalData = () => {
@@ -48,131 +86,7 @@ const getHistoricalData = () => {
     });
 };
 
-const buildChartData = (data) => {
-  // `data: [{
-  //     x: new Date(),
-  //     y: 1
-  // }, {
-  //     t: new Date(),
-  //     y: 10
-  // }]`
-  let chartDataCases = [];
-  let chartDataRecovered = [];
-  let chartDataDeaths = [];
-  for (let date in data.cases) {
-    let newDataCasesPoint = {
-      x: date,
-      y: data.cases[date],
-    };
-    let newDataRecoveredPoint = {
-      x: date,
-      y: data.recovered[date],
-    };
-    let newDataDeathsPoint = {
-      x: date,
-      y: data.deaths[date],
-    };
-    chartDataCases.push(newDataCasesPoint);
-    chartDataRecovered.push(newDataRecoveredPoint);
-    chartDataDeaths.push(newDataDeathsPoint);
-  }
-  return {
-    cases: chartDataCases,
-    recovered: chartDataRecovered,
-    deaths: chartDataDeaths,
-  };
-};
-
-const buildPieChart = (data) => {
-  var ctx = document.getElementById("myPieChart").getContext("2d");
-  var myPieChart = new Chart(ctx, {
-    type: "pie",
-    data: {
-      datasets: [
-        {
-          data: [data.active, data.recovered, data.deaths],
-          backgroundColor: ["#9d80fe", "#7dd71d", "#fb4443"],
-        },
-      ],
-
-      // These labels appear in the legend and in the tooltips when hovering different arcs
-      labels: ["Active", "Recovered", "Deaths"],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-    },
-  });
-};
-
-const buildChart = (chartData) => {
-  var ctx = document.getElementById("myChart").getContext("2d");
-  var timeFormat = "MM/DD/    YY";
-  var chart = new Chart(ctx, {
-    // The type of chart we want to create
-    type: "line",
-
-    // The data for our dataset
-    data: {
-      datasets: [
-        {
-          label: "Total Cases",
-          fill: false,
-          borderColor: "rgb(212, 106, 106)",
-          data: chartData.cases,
-        },
-        {
-          label: "Total recovered",
-          fill: false,
-          borderColor: "rgb(98, 190, 129)",
-          data: chartData.recovered,
-        },
-        {
-          label: "Total deaths",
-          fill: false,
-          borderColor: "rgb(20, 87, 100)",
-          data: chartData.deaths,
-        },
-      ],
-    },
-
-    // Configuration options go here
-    options: {
-      maintainAspectRatio: false,
-      tooltips: {
-        node: "index",
-        intersect: false,
-      },
-      scales: {
-        xAxes: [
-          {
-            type: "time",
-            time: {
-              format: timeFormat,
-              tooltipFormat: "ll",
-            },
-            scaleLabel: {
-              display: true,
-              labelString: "Date",
-            },
-          },
-        ],
-        yAxes: [
-          {
-            ticks: {
-              // Include a dollar sign in the ticks
-              callback: function (value, index, values) {
-                return numeral(value).format("0,0");
-              },
-            },
-          },
-        ],
-      },
-    },
-  });
-};
-
-const showDataOnMap = (data) => {
+const showDataOnMap = (data, casesTypes = "cases") => {
   data.map((country) => {
     let countryCenter = {
       lat: country.countryInfo.lat,
@@ -180,15 +94,17 @@ const showDataOnMap = (data) => {
     };
 
     var countryCircle = new google.maps.Circle({
-      strokeColor: "#FF0000",
+      strokeColor: casesTypeColors[casesTypes],
       strokeOpacity: 0.8,
       strokeWeight: 2,
-      fillColor: "#FF0000",
+      fillColor: casesTypeColors[casesTypes],
       fillOpacity: 0.35,
       map: map,
       center: countryCenter,
-      radius: country.cases,
+      radius: country[casesTypes],
     });
+
+    mapCircles.push(countryCircle);
 
     var html = `
         <div class="info-container"> 
@@ -222,11 +138,9 @@ const showDataInTable = (data) => {
     html += `
         <tr>
         <td>${country.country}</td>
-        <td>${country.cases}</td>
-        <td>${country.recovered}</td>
-        <td>${country.deaths}</td>
+        <td>${numeral(country.cases).format("0,0")}</td>
         </tr>
 `;
   });
-  //   document.getElementById("table-data").innerHTML = html;
+  document.getElementById("table-data").innerHTML = html;
 };
