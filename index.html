@@ -6,6 +6,14 @@
     <title>Document</title>
     <link
       rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/dropdown.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/transition.min.css"
+    />
+    <link
+      rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
       integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
       crossorigin="anonymous"
@@ -30,7 +38,13 @@
               <h2>Covid-19 Tracker</h2>
             </div>
             <div class="col search-container">
-              <div class="input-group">
+              <div class="ui fluid search selection dropdown">
+                <input type="hidden" name="country" />
+                <i class="dropdown icon"></i>
+                <div class="default text">Select Country</div>
+                <div class="menu"></div>
+              </div>
+              <!-- <div class="input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text"
                     ><i class="fas fa-search"></i>
@@ -43,43 +57,57 @@
                   aria-label="Username"
                   aria-describedby="basic-addon1"
                 />
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="row stats-container">
             <div class="col">
-              <div class="card">
+              <div class="card cases" onclick="changeDataSelections('cases')">
+                <div class="tab-selection"></div>
                 <div class="card-body">
-                  <h5 class="card-title"  onclick="changeDataSelections('cases')">Coronavirus cases</h5>
-                  <H3 class="card-subtitle mb-2 total-number">1,436,886</H3>
-                  <div class="text-muted font-weight-bold total cases-total "> 1.69M Total</div>
+                  <h5 class="card-title">Coronavirus cases</h5>
+                  <h3 class="card-subtitle mb-2 total-number">1,436,886</h3>
+                  <div class="text-muted font-weight-bold total cases-total">
+                    1.69M Total
+                  </div>
                 </div>
               </div>
             </div>
             <div class="col">
-            <div class="card" ">
-                <div class="card-body"  onclick="changeDataSelections('recovered')">
+              <div
+                class="card recovered"
+                onclick="changeDataSelections('recovered')"
+              >
+                <div class="tab-selection"></div>
+                <div class="card-body">
                   <h5 class="card-title">Recovered</h5>
-                  <H3 class="card-subtitle mb-2 recovered-number">302,964</H3>
-                  <div class="text-muted font-weight-bold total recovered-total "> 1.69M Total</div>
+                  <h3 class="card-subtitle mb-2 recovered-number">302,964</h3>
+                  <div
+                    class="text-muted font-weight-bold total recovered-total"
+                  >
+                    1.69M Total
+                  </div>
                 </div>
               </div>
             </div>
             <div class="col">
-                <div class="card"  onclick="changeDataSelections('deaths')">
-                    <div class="card-body">
-                      <h5 class="card-title">Deaths</h5>
-                      <H3 class="card-subtitle mb-2 deaths-number">82,191</H3>
-                      <div class="text-muted font-weight-bold total deaths-total "> 1.69M Total</div>
-                    </div>
+              <div class="card deaths" onclick="changeDataSelections('deaths')">
+                <div class="tab-selection"></div>
+                <div class="card-body">
+                  <h5 class="card-title">Deaths</h5>
+                  <h3 class="card-subtitle mb-2 deaths-number">82,191</h3>
+                  <div class="text-muted font-weight-bold total deaths-total">
+                    1.69M Total
+                  </div>
                 </div>
+              </div>
             </div>
           </div>
           <div class="row map-container mt-3">
-              <div class="col">
-                <div id="map"></div>
-              </div>
-          </div> 
+            <div class="col">
+              <div id="map"></div>
+            </div>
+          </div>
           <!-- <div class="row chart-container mt-3">
               <div class="col linear-chart p-3 mr-3">
                 <canvas id="myChart"></canvas>
@@ -91,12 +119,12 @@
         </div>
         <div class="col-4 side-panel-container my-3">
           <div class="cases-table-container">
-              <h4>Live cases by country</h4>
-              <div class="country-data">
-                <table class="table ">
-                  <tbody id="table-data"></tbody>
-                  </table>
-              </div>
+            <h4>Live cases by country</h4>
+            <div class="country-data">
+              <table class="table">
+                <tbody id="table-data"></tbody>
+              </table>
+            </div>
           </div>
           <div class="chart-container mt-3">
             <div class="linear-chart p-3 mr-3">
@@ -156,5 +184,7 @@
       integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/dropdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/transition.min.js"></script>
   </body>
 </html>
