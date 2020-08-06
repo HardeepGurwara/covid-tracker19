@@ -32,12 +32,12 @@
   <body>
     <div class="container-fluid main">
       <div class="row">
-        <div class="col-12 col-lg-8">
+        <div class="col-12 col-lg-8 d-flex flex-column">
           <div class="row header-container">
             <div class="col-sm title-container">
               <h2>Covid-19 Tracker</h2>
             </div>
-            <div class="col-sm search-container">
+            <div class="col-sm search-container mt-3 mt-sm-0">
               <div class="ui fluid search selection dropdown">
                 <input type="hidden" name="country" />
                 <i class="dropdown icon"></i>
@@ -61,7 +61,7 @@
             </div>
           </div>
           <div class="row stats-container">
-            <div class="col-12 col-md-4">
+            <div class="col-12 col-md-4 mb-2 mb-md-0">
               <div
                 class="card cases active"
                 onclick="changeDataSelections(this, 'cases')"
@@ -76,7 +76,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-md-4">
+            <div class="col-12 col-md-4 mb-2 mb-md-0">
               <div
                 class="card recovered"
                 onclick="changeDataSelections(this, 'recovered')"
@@ -93,7 +93,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-md-4">
+            <div class="col-12 col-md-4 mb-2 mb-md-0">
               <div
                 class="card deaths"
                 onclick="changeDataSelections(this, 'deaths')"
@@ -109,7 +109,7 @@
               </div>
             </div>
           </div>
-          <div class="row map-container mt-3">
+          <div class="row map-container mt-3 flex-grow-1">
             <div class="col">
               <div id="map"></div>
             </div>
