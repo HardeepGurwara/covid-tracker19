@@ -47,9 +47,17 @@ const initDropdown = (searchList) => {
     },
   });
 };
-const changeDataSelections = (casesTypes) => {
+const changeDataSelections = (elem, casesTypes) => {
   clearTheMap();
   showDataOnMap(coronaGlobalData, casesTypes);
+  setActive(elem);
+};
+
+const setActive = (elem) => {
+  const activeEl = document.querySelector(".card.active");
+
+  elem.classList.toggle("active");
+  activeEl.classList.remove("active");
 };
 
 const clearTheMap = () => {
@@ -135,7 +143,7 @@ const setStatsData = (data) => {
 };
 
 const getHistoricalData = () => {
-  fetch("https://corona.lmao.ninja/v2/historical/all?lastdays=10")
+  fetch("https://corona.lmao.ninja/v2/historical/all?lastdays=30")
     .then((response) => {
       return response.json();
     })

@@ -58,6 +58,7 @@ body {
   border-radius: 12px;
   box-shadow: 0 0 8px -5px rgba(0, 0, 0, 0.5);
   overflow: hidden;
+  cursor: pointer;
 }
 
 .stats-container .card-body {
@@ -103,13 +104,22 @@ body {
   border: none;
 }
 
+.card.active > .tab-selection {
+  opacity: 1;
+}
+
 .tab-selection {
   height: 10px;
   position: absolute;
-
+  opacity: 0;
   top: 0;
   left: 0;
   right: 0;
+  transition: all 0.2s ease-in-out;
+}
+
+.card:hover > .tab-selection {
+  opacity: 1;
 }
 
 .cases .tab-selection {

@@ -7,24 +7,29 @@ const buildChartData = (data) => {
   //     y: 10
   // }]`
   let chartDataCases = [];
+  let lastDataPoint;
   let chartDataRecovered = [];
   let chartDataDeaths = [];
   for (let date in data.cases) {
-    let newDataCasesPoint = {
-      x: date,
-      y: data.cases[date],
-    };
-    let newDataRecoveredPoint = {
-      x: date,
-      y: data.recovered[date],
-    };
-    let newDataDeathsPoint = {
-      x: date,
-      y: data.deaths[date],
-    };
-    chartDataCases.push(newDataCasesPoint);
-    chartDataRecovered.push(newDataRecoveredPoint);
-    chartDataDeaths.push(newDataDeathsPoint);
+    if (lastDataPoint) {
+      let newDataCasesPoint = {
+        x: date,
+        y: data.cases[date] - lastDataPoint,
+      };
+      chartDataCases.push(newDataCasesPoint);
+    }
+
+    // let newDataRecoveredPoint = {
+    //   x: date,
+    //   y: data.recovered[date],
+    // };
+    // let newDataDeathsPoint = {
+    //   x: date,
+    //   y: data.deaths[date],
+    // };
+    lastDataPoint = data.cases[date];
+    // chartDataRecovered.push(newDataRecoveredPoint);
+    // chartDataDeaths.push(newDataDeathsPoint);
   }
   return {
     cases: chartDataCases,
@@ -80,6 +85,11 @@ const buildChart = (chartData) => {
       tooltips: {
         node: "index",
         intersect: false,
+      },
+      elements: {
+        point: {
+          radius: 0,
+        },
       },
       scales: {
         xAxes: [
