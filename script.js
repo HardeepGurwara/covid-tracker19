@@ -88,7 +88,7 @@ const setSearchList = (data) => {
 };
 
 const getCountriesData = () => {
-  fetch("http://localhost:3000/countries")
+  fetch("https://corona.lmao.ninja/v2/countries")
     .then((response) => {
       return response.json();
     })
