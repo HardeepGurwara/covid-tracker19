@@ -88,7 +88,7 @@ const setSearchList = (data) => {
 };
 
 const getCountriesData = () => {
-  fetch("https://corona.lmao.ninja/v2/countries")
+  fetch("https://disease.sh/v3/covid-19/countries")
     .then((response) => {
       return response.json();
     })
